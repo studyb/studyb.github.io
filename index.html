@@ -89,7 +89,7 @@
 		markerRoot1 = new THREE.Group();
 		scene.add(markerRoot1);
 		let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-			type: 'pattern', patternUrl: "data/bear.patt", //60 scaling colored
+			type: 'pattern', patternUrl: "data/col60.patt", //60 scaling colored
 		})
 		let geometry1 = new THREE.PlaneBufferGeometry(1,1, 4,4);
 		let loader = new THREE.TextureLoader();
@@ -116,25 +116,27 @@
 var arWorldRoot = smoothedRoot
 
 var loader2 = new THREE.GLTFLoader();
-loader2.load( 'vacations/scene.gltf', function ( gltf ) {
-			gltf.scene.scale.set( 0.1, 0.1, 0.1 );
+loader2.load( 'mei/scene.gltf', function ( gltf ) {
+      gltf.scene.animations;
+			gltf.scene.scale.set( 0.008, 0.008, 0.008);
+			gltf.scene.rotation.x=-1.57
 			gltf.scene.position.x = 0;				    //Position (x = right+ left-)
-      gltf.scene.position.y = 0.25;				    //Position (y = up+, down-)
-			gltf.scene.position.z = 0;				    //Position (z = front +, back-)
+      gltf.scene.position.y = 0.2;				    //Position (y = up+, down-)
+			gltf.scene.position.z = 0.2;				    //Position (z = front +, back-)
 			arWorldRoot.add(gltf.scene);
+      //////////////////////////////////////////////////////////////////////////////////
+      	//		animation
+      	//////////////////////////////////////////////////////////////////////////////////
 
-			//markerRoot1.add(gltf.scene);
+      animationMixer = new THREE.AnimationMixer(gltf.scene)
+      animation = animationMixer.clipAction( gltf.animations[ 0 ] )
+      animation.setLoop( THREE.LoopRepeat )
+      animation.play()
+      animate();
 }, undefined, function ( error ) {
 	console.error( error );
 } );
 }
-
-	//function update()
-	//{
-		<!--		// update artoolkit on every frame
-		//if ( arToolkitSource.ready !== false )
-			//arToolkitContext.update( arToolkitSource.domElement );
-	//}
 
 	// update artoolkit on every frame
 onRenderFcts.push(function(){
@@ -153,6 +155,14 @@ onRenderFcts.push(function(){
 	stats.update();
 })
 
+function animate() {
+      requestAnimationFrame( animate );
+      var delta = clock.getDelta();
+      animationMixer.update( delta );
+      renderer.render( scene, camera );
+    }
+
+
 
 // run the rendering loop
 	var lastTimeMsec= null
@@ -170,17 +180,5 @@ onRenderFcts.push(function(){
 	})
 
 
-	//function render()
-	//{
-		//renderer.render( scene, camera );
-	//}
-	//function animate()
-//	{
-	//	requestAnimationFrame(animate);
-		//deltaTime = clock.getDelta();
-		//totalTime += deltaTime;
-		//update();
-		//render();
-	//}
 	</script>
 </body>
