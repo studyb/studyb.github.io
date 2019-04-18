@@ -4,13 +4,18 @@
 <!-- ar.js -->
 <script src="js/ar.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = 'https://rawgit.com/jeromeetienne/ar.js/master/three.js/'</script>
-
 <!-- test obj with three.js loader -->
 <!--<script src='js/three.js'></script>-->
 <script src='js/GLTFLoader.js'></script>
 <script src="js/stats.min.js"></script>
 
 
+
+<style>
+canvas {
+    display: block;
+}
+</style>
 
 <body style='margin : 0px; overflow: hidden;'>
 	<script>
@@ -163,21 +168,9 @@ onRenderFcts.push(function(){
 })
 
 
-function resizeCanvasToDisplaySize() {
-  const canvas = renderer.domElement;
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-  if (canvas.width !== width ||canvas.height !== height) {
-    // you must pass false here or three.js sadly fights the browser
-    renderer.setSize(width, height, false);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
 
-    // set render target sizes here
-  }
-}
+
 function animate() {
-			resizeCanvasToDisplaySize();
       requestAnimationFrame( animate );
       var delta = clock.getDelta();
       animationMixer.update( delta );
