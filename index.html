@@ -52,9 +52,9 @@ html, body {
 		renderer.domElement.style.position = 'absolute'
 		renderer.domElement.style.top = '0px'
 		renderer.domElement.style.left = '0px'
-		renderer.domElement.style.right= '0px'
 		renderer.domElement.style.display= 'block'
 		renderer.domElement.style.overflow = 'hidden'
+		renderer.domElement.style.overflow-x = 'hidden'
 		document.body.appendChild( renderer.domElement );
 		clock = new THREE.Clock();
 		deltaTime = 0;
