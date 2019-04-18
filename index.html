@@ -116,7 +116,7 @@
 var arWorldRoot = smoothedRoot
 
 var light = new THREE.AmbientLight( 0x404040, 1.5); // soft white light
-light.castShadow = true;  
+light.castShadow = true;
 scene.add( light );
 
 
@@ -125,6 +125,7 @@ loader2.load( 'bear/testbear.gltf', function ( gltf ) {
       gltf.scene.animations;
 			gltf.scene.scale.set( 0.15, 0.15, 0.15);
 			gltf.scene.rotation.x=-1.57
+			gltf.scene.rotation.z = 1.57
 			gltf.scene.position.x = 0;				    //Position (x = right+ left-)
       gltf.scene.position.y = 0.2;				    //Position (y = up+, down-)
 			gltf.scene.position.z = 0.6;				    //Position (z = front +, back-)
