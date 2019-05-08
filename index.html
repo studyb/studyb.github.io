@@ -93,7 +93,7 @@
 		let geometry1 = new THREE.PlaneBufferGeometry(1,1, 4,4);
 		let loader = new THREE.TextureLoader();
 		//let texture = loader.load('data/rain2.png');
-		THREE.MeshBasicMaterial( { color: 0xd0dcef, opacity: 0.5 } );
+		let material1 = THREE.MeshBasicMaterial( { color: 0xd0dcef, opacity: 0.5 } );
 		mesh1 = new THREE.Mesh( geometry1, material1 );
 		mesh1.rotation.x = -Math.PI/2;
 		//mesh1.rotation.z = Math.PI
