@@ -48,8 +48,9 @@
 			alpha: true
 		});
 		renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-		var width  = window.innerWidth,
-		height = window.innerHeight;
+		var canvas = document.getElementsByTagName('canvas')[0];
+		var width= canvas.width;
+		var height = canvas.height;
 		renderer.setSize( width, height );
 		renderer.domElement.style.position = 'absolute'
 		renderer.domElement.style.top = '0px'
