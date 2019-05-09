@@ -163,22 +163,6 @@ onRenderFcts.push(function(){
 	arToolkitContext.update( arToolkitSource.domElement )
 })
 
-function resizeCanvasToDisplaySize() {
-  const canvas = renderer.domElement;
-  // look up the size the canvas is being displayed
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-
-  // adjust displayBuffer size to match
-  if (canvas.width !== width || canvas.height !== height) {
-    // you must pass false here or three.js sadly fights the browser
-    renderer.setSize(width, height, false);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-
-    // update any render target sizes here
-  }
-}
 //////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
@@ -186,7 +170,6 @@ var stats = new Stats();
 document.body.appendChild( stats.dom );
 // render the scene
 onRenderFcts.push(function(){
-	resizeCanvasToDisplaySize();
 	renderer.render( scene, camera );
 	stats.update();
 })
