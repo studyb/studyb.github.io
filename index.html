@@ -14,10 +14,13 @@
 <head>
   <style>
     html, body {
-        height: 100vh;
+				var canvas = document.getElementsByTagName('canvas')[0];
+				var w= canvas.width;
+				var h = canvas.height;
+        height: h;
         padding: 0;
 				margin:0;
-				width:100vh;
+				width: w;
 				position:absolute;
 				overflow:hidden;
     }
