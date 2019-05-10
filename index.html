@@ -1,206 +1,41 @@
-<!--forgive the mess-->
-<head>
-  <!-- three.js library -->
-  <script src='js/three.js'></script>
-  <script src="js/stats.min.js"></script>
-  <script src = "js/viewportSize-min.js"></script>
-  <!-- ar.js -->
-  <script src="js/ar.js"></script>
-  <script>THREEx.ArToolkitContext.baseURL = 'https://rawgit.com/jeromeetienne/ar.js/master/three.js/'</script>
-  <!-- test obj with three.js loader -->
-  <!--<script src='js/three.js'></script>-->
-  <script src='js/GLTFLoader.js'></script>
-  <script src="js/stats.min.js"></script>
-  <style>
-	canvas {
-		display:block;
-	}
-    body {
-        height: 100vh;
-        padding: 0;
-				margin:0;
-				width:100vh;
-				position:absolute;
-				overflow:hidden;
-    }
-  </style>
-  <title>Study Bear</title>
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<body>
-	<script>
-	var scene, camera, renderer, clock, deltaTime, totalTime;
-	var arToolkitSource, arToolkitContext;
-	var markerRoot1;
-	var mesh1;
-// array of functions for the rendering loop
-	var onRenderFcts= [];
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/edit.css">
+    <title>Study Bear</title>
+  </head>
+  <body>
+    <div class="center-div">
+    <div class="col-xs-1" align="center">
+    <img src = "img/test.png" width="18%" style ="padding-top:5%;">
+    <h3 style="font-weight:700; padding-top:20px;">Study Bear</h3>
+    <h6 style="font-size:15px;"> is an augmented reality sticker project inspired by the characters of 24/7 lofi hip-hop radios on YouTube.</h6>
+    <ul class = "list-unstyled">
+      <li>1.	scan qr code</li>
+      <li>2.	allow camera when prompted</li>
+      <caption style="font-size:15px">(if error shows, try opening https://studybear.me on a different browser!)
+      iOS: Safari preferred</caption>
+      <li>3.	hover over sticker in good lighting</li>
+      <caption style="font-size:15px">(the black border cannot be obstructed either)</caption>
+      <li>4.	observe one focused boi in the academic wilderness</li>
+      <li>5. feel free to share any additional stickers!</li>
+  </ul>
+  <a href="bear.html"><button type="button" class="btn btn-primary btn-lg">START &#128059;</button></a>
+  <footer>
+  <p style="padding-top:30px; font-size:15px;">still improvising, may be more refined in the future :)</p>
+  </footer>
+</div>
+</div>
 
-	initialize();
-	//animate();
-	function initialize()
-	{
-		scene = new THREE.Scene();
-		let ambientLight = new THREE.AmbientLight( 0xcccccc, 1.0 );
-		scene.add( ambientLight );
-
-		camera = new THREE.Camera();
-		scene.add(camera);
-		renderer = new THREE.WebGLRenderer({
-			antialias : true,
-			alpha: true
-		});
-		renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-		var width  = viewportSize.getWidth(),
-		height = viewportSize.getHeight();
-		renderer.setSize( width, height );
-		renderer.domElement.style.position = 'absolute'
-		renderer.domElement.style.top = '0px'
-		renderer.domElement.style.left = '0px'
-		renderer.domElement.style.overflow = 'hidden'
-
-		document.body.appendChild( renderer.domElement );
-		clock = new THREE.Clock();
-		deltaTime = 0;
-		totalTime = 0;
-
-		////////////////////////////////////////////////////////////
-		// setup arToolkitSource
-		////////////////////////////////////////////////////////////
-		arToolkitSource = new THREEx.ArToolkitSource({
-			sourceType : 'webcam',
-		});
-		function onResizeElement()
-		{
-			arToolkitSource.onResizeElement()
-			arToolkitSource.copyElementSizeTo(renderer.domElement)
-			if ( arToolkitContext.arController !== null )
-			{
-				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
-			}
-		}
-		arToolkitSource.init(function onReady(){
-			onResizeElement()
-		});
-
-		// handle resize event
-		window.addEventListener('resize', function(){
-			onResizeElement()
-		});
-		////////////////////////////////////////////////////////////
-		// setup arToolkitContext
-		////////////////////////////////////////////////////////////
-		// create atToolkitContext
-		arToolkitContext = new THREEx.ArToolkitContext({
-			cameraParametersUrl: 'data/camera_para.dat',
-			detectionMode: 'mono'
-		});
-		// copy projection matrix to camera when initialization complete
-		arToolkitContext.init( function onCompleted(){
-			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
-		});
-		////////////////////////////////////////////////////////////
-		// setup markerRoots
-		////////////////////////////////////////////////////////////
-		// build markerControls
-		markerRoot1 = new THREE.Group();
-		scene.add(markerRoot1);
-		let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-			type: 'pattern', patternUrl: "data/col60.patt", //60 scaling colored
-		})
-		let geometry1 = new THREE.PlaneBufferGeometry(1,1, 4,4);
-let loader = new THREE.TextureLoader();
-// let texture = loader.load( 'images/earth.jpg', render );
-let material1 = new THREE.MeshBasicMaterial( { color: 0xd0dcef, opacity: 0.5 } );
-mesh1 = new THREE.Mesh( geometry1, material1 );
-mesh1.rotation.x = -Math.PI/2;
-markerRoot1.add( mesh1 );
-		function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
-		function onError(xhr) { console.log( 'An error happened' ); }
-
-		// build a smoothedControls
-			var smoothedRoot = new THREE.Group()
-			scene.add(smoothedRoot)
-			var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
-				lerpPosition: 0.4,
-				lerpQuaternion: 0.3,
-				lerpScale: 1,
-			})
-			onRenderFcts.push(function(delta){
-				smoothedControls.update(markerRoot1)
-			})
-
-var arWorldRoot = smoothedRoot
-
-var light = new THREE.PointLight( 0xffffff, 1, 100 );
-light.position.set( 0, 10, 0 );
-light.castShadow = true;
-scene.add( light );
-
-
-var loader2 = new THREE.GLTFLoader();
-loader2.load( 'bear/writing2.gltf', function ( gltf ) {
-      gltf.scene.animations;
-			gltf.scene.scale.set( 0.12, 0.12, 0.12);
-			gltf.scene.rotation.x=-1.57
-			gltf.scene.rotation.y=-0.55
-			gltf.scene.position.x = 0.25;
-      gltf.scene.position.y = 0.4;
-			gltf.scene.position.z = 0.53;
-			arWorldRoot.add(gltf.scene);
-      //////////////////////////////////////////////////////////////////////////////////
-      	//		animation
-      	//////////////////////////////////////////////////////////////////////////////////
-
-      animationMixer = new THREE.AnimationMixer(gltf.scene)
-      animation = animationMixer.clipAction( gltf.animations[ 0 ] )
-      animation.setLoop( THREE.LoopRepeat )
-      animation.play()
-      animate();
-}, undefined, function ( error ) {
-	console.error( error );
-} );
-}
-
-	// update artoolkit on every frame
-onRenderFcts.push(function(){
-	if( arToolkitSource.ready === false )	return
-	arToolkitContext.update( arToolkitSource.domElement )
-})
-
-//////////////////////////////////////////////////////////////////////////////////
-	//		render the whole thing on the page
-	//////////////////////////////////////////////////////////////////////////////////
-var stats = new Stats();
-document.body.appendChild( stats.dom );
-// render the scene
-onRenderFcts.push(function(){
-	renderer.render( scene, camera );
-	stats.update();
-})
-
-
-
-function animate() {
-      requestAnimationFrame( animate );
-      var delta = clock.getDelta();
-      animationMixer.update( delta );
-      renderer.render( scene, camera );
-    }
-
-// run the rendering loop
-	var lastTimeMsec= null
-	requestAnimationFrame(function animate(nowMsec){
-		// keep looping
-		requestAnimationFrame( animate );
-		// measure time
-		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
-		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
-		lastTimeMsec	= nowMsec
-		// call each update function
-		onRenderFcts.forEach(function(onRenderFct){
-			onRenderFct(deltaMsec/1000, nowMsec/1000)
-		})
-	})
-	</script>
-</body>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
