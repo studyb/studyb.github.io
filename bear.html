@@ -177,6 +177,8 @@ onRenderFcts.push(function(){
 	//////////////////////////////////////////////////////////////////////////////////
 var stats = new Stats();
 document.body.appendChild( stats.dom );
+stats.dom.style.margin = '0'
+stats.dom.style.padding='0'
 // render the scene
 onRenderFcts.push(function(){
 	renderer.render( scene, camera );
