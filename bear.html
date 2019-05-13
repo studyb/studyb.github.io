@@ -14,8 +14,6 @@
   <style>
 	canvas {
 		display:block;
-    margin:0;
-    padding:0;
 	}
     body {
         height: 100vh;
@@ -60,9 +58,6 @@
 		renderer.domElement.style.top = '0px'
 		renderer.domElement.style.left = '0px'
 		renderer.domElement.style.overflow = 'hidden'
-    renderer.domElement.style.display = "inline"
-    renderer.domElement.style.margin = '0'
-    renderer.domElement.style.padding = '0'
 
 		document.body.appendChild( renderer.domElement );
 		clock = new THREE.Clock();
@@ -178,9 +173,7 @@ onRenderFcts.push(function(){
 	//////////////////////////////////////////////////////////////////////////////////
 var stats = new Stats();
 document.body.appendChild( stats.dom );
-stats.dom.style.margin = '0'
-stats.dom.style.padding='0'
-stats.dom.style.display = "inline"
+
 // render the scene
 onRenderFcts.push(function(){
 	renderer.render( scene, camera );
